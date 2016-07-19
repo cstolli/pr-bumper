@@ -221,7 +221,7 @@ describe('Bumper', () => {
       sandbox.stub(bumper.ci, 'commit').returns(Promise.resolve('committed'))
       sandbox.stub(bumper.ci, 'setupGitEnv').returns(Promise.resolve('set-up'))
 
-      return bumper._commitChanges().then((res) => {
+      return bumper._commitChanges({blackduck: 'blackduck'}).then((res) => {
         result = res
       })
     })
@@ -231,7 +231,7 @@ describe('Bumper', () => {
     })
 
     it('adds the files to stage', () => {
-      expect(bumper.ci.add.lastCall.args).to.be.eql([['package.json', 'CHANGELOG.md']])
+      expect(bumper.ci.add.lastCall.args).to.be.eql([['package.json', 'CHANGELOG.md', 'blackduck/']])
     })
 
     it('commits the changes', () => {
