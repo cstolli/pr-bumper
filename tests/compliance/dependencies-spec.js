@@ -190,7 +190,7 @@ describe('dependencies', function () {
     })
   })
 
-  describe('gets package data', function () {
+  describe.only('gets package data', function () {
     let readFileStub
     let repos = ['"ember-frost-1"', '"frost-1"']
     const fileData = `  ${repos.join('\n  ')}\n`
