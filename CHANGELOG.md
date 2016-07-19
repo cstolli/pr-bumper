@@ -1,3 +1,9 @@
+# 1.2.0
+- Example change
+
+# 1.2.0
+- Example change
+
 # 0.6.0
  * **Added** support for using GFM Checkboxes to choose scope
  * **Added** a `PULL_REQUEST_TEMPLATE` for the `pr-bumper` repository itself

@@ -282,6 +282,29 @@ describe('Bumper', () => {
     })
   })
 
+  describe('._dependencies()', () => {
+    it('returns a promise resolving to nothing when an out dir is configured', function (done) {
+      const outputConfig = {
+        directory: 'blackduck/',
+        requirementsFile: 'js-requirements.json',
+        reposFile: 'repos',
+        ignoreFile: 'ignore'
+      }
+      __.set(bumper.config, 'dependencies.output', outputConfig)
+      bumper._dependencies().then((result) => {
+        expect(result).to.equal(undefined)
+        done()
+      })
+    })
+
+    it('returns a promise resolving to \'skipping dependencies\' if no dir is configured', function (done) {
+      bumper._dependencies().then((result) => {
+        expect(result).to.equal('skipping dependencies')
+        done()
+      })
+    })
+  })
+
   describe('._getLastPr()', () => {
     let getPrResolver, resolution, rejection, promise
     beforeEach(() => {
@@ -427,8 +450,11 @@ describe('Bumper', () => {
       prependStub.withArgs('CHANGELOG.md', changelogContent).returns(Promise.resolve())
 
       bumper.config.prependChangelog = true
-
       return bumper.bump()
+    })
+
+    it('does nothing', function () {
+      expect(1).to.eql(1)
     })
 
     describe('configuration on', () => {
