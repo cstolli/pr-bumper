@@ -127,7 +127,7 @@ describe('Bumper', () => {
       sandbox.stub(bumper, '_prependChangelog').returns(Promise.resolve())
       sandbox.stub(bumper, '_commitChanges').returns(Promise.resolve())
       sandbox.stub(bumper, '_createTag').returns(Promise.resolve())
-      sandbox.stub(bumper, '_blackduck').returns(Promise.resolve())
+      sandbox.stub(bumper, '_dependencies').returns(Promise.resolve())
 
       return bumper.bump().then((res) => {
         result = res
@@ -154,8 +154,8 @@ describe('Bumper', () => {
       expect(bumper._createTag.calledOnce).to.be.ok
     })
 
-    it('runs the blackduck', () => {
-      expect(bumper._blackduck.calledOnce).to.be.ok
+    it('runs the dependencies', () => {
+      expect(bumper._dependencies.calledOnce).to.be.ok
     })
 
     it('pushs the changes', () => {
@@ -211,6 +211,8 @@ describe('Bumper', () => {
     let result
     beforeEach(() => {
       __.set(bumper.config, 'ci.buildNumber', '12345')
+      __.set(bumper.config, 'dependencies.output.directory', 'some-dir')
+
       bumper.ci = {
         add () {},
         commit () {},
@@ -221,7 +223,7 @@ describe('Bumper', () => {
       sandbox.stub(bumper.ci, 'commit').returns(Promise.resolve('committed'))
       sandbox.stub(bumper.ci, 'setupGitEnv').returns(Promise.resolve('set-up'))
 
-      return bumper._commitChanges({blackduck: 'blackduck'}).then((res) => {
+      return bumper._commitChanges().then((res) => {
         result = res
       })
     })
@@ -231,7 +233,7 @@ describe('Bumper', () => {
     })
 
     it('adds the files to stage', () => {
-      expect(bumper.ci.add.lastCall.args).to.be.eql([['package.json', 'CHANGELOG.md', 'blackduck/']])
+      expect(bumper.ci.add.lastCall.args).to.be.eql([['package.json', 'CHANGELOG.md', 'some-dir/']])
     })
 
     it('commits the changes', () => {
