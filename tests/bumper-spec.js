@@ -292,7 +292,7 @@ describe('Bumper', () => {
       }
       __.set(bumper.config, 'dependencies.output', outputConfig)
       bumper._dependencies().then((result) => {
-        expect(result).to.equal(undefined)
+        expect(result).not.to.be.ok
         done()
       })
     })
